@@ -6,7 +6,7 @@ Demo containerized HTTP server and workers with Redis/Valkey job queue. Written 
 
 This is a small Rust web application. It can run as either an HTTP server or a worker, depending on whether the `APP_TYPE` environment variable is set to "server" or "worker." 
 
-Deployed as a server, it accepts work through HTTP POST requests, adding jobs to a Valkey (Redis) queue. This queue is occasionally polled by separate workers who log their results to stdout.
+As a server, it accepts work through HTTP POST requests, adding jobs to a Valkey (Redis) queue. This queue is occasionally polled by separately run workers who log their results to stdout.
 
 ```mermaid
 flowchart LR
@@ -27,7 +27,7 @@ This is a simple, quick, and dirty toy example for learning. Do not use this in 
 
 Spawn local HTTP server, workers, and Valkey containers with `docker compose` with
 
-```
+```bash
 docker compose up
 ```
 
@@ -35,7 +35,7 @@ Keep this terminal session open to see workers containers respond requests. The 
 
 Once the containers are up and running, POST to the server from a separate terminal with `curl`, for example
 
-```
+```bash
 curl -i -H "Content-Type: application/json" \
   -X POST -d '{"one": 1, "two": 2}' \
   http://127.0.0.1:3000/add
