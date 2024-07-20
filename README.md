@@ -4,9 +4,21 @@ Demo containerized HTTP server and workers with Redis/Valkey job queue. Written 
 
 ## More details?
 
-This is a small Rust web application. It can run as either an HTTP server or a worker. 
+This is a small Rust web application. It can run as either an HTTP server or a worker, depending on whether the `APP_TYPE` environment variable is set to "server" or "worker." 
 
-Deployed as a server, it accepts work through HTTP POST requests, adding jobs to a Valkey (Redis) queue. This queue is occasionally polled by a number of separate workers who log their results to stdout. The work done by this system is simple math: addition, subtraction, and multiplication. The endpoint path POSTed to (e.g., `http://127.0.0.1:3000/add`) determines the operation. The input values are taken from the request's JSON body.
+Deployed as a server, it accepts work through HTTP POST requests, adding jobs to a Valkey (Redis) queue. This queue is occasionally polled by separate workers who log their results to stdout.
+
+```mermaid
+flowchart LR
+
+D(user) -->|POST request| A(HTTP server)
+A[HTTP server] -->|push job| B[Valkey]
+B[Valkey] -->|pop job| C[workers]
+
+```
+
+
+The work done by this system is simple math: addition, subtraction, and multiplication. The endpoint path POSTed to (e.g., `http://127.0.0.1:3000/add`) determines the operation. The input values are taken from the request's JSON body.
 
 This is a simple, quick, and dirty toy example for learning. Do not use this in production.
 
